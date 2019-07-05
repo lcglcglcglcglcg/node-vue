@@ -1,0 +1,239 @@
+# 项目中的函数查漏补缺
+
+#### sort()
+
+sort((a,b)=>{return a-b}) 方法用于对数组的元素进行排序。
+
+- 若 a 小于 b，在排序后的数组中 a 应该出现在 b 之前，则返回一个小于 0 的值。
+- 若 a 等于 b，则返回 0。
+- 若 a 大于 b，则返回一个大于 0 的值。
+
+#### Object.assign()
+
+合并对象:
+
+```js
+const obj = Object.assign({}, o1, o2, o3);
+console.log(obj); // { a: 1, b: 2, c: 3 }
+```
+
+#### map()
+
+map() 把每个元素通过函数传递到当前匹配集合中，生成包含返回值的新的 jQuery 对象。
+
+```
+.map(callback(index,domElement))
+```
+
+#### fastclick 和 scroll 中click的冲突问题，在dom上添加class="needsclick"
+
+# vue_8事件描述符(.stop, .prevent, .self, .once, .capture)
+
+.stop 是阻止冒泡行为,不让当前元素的事件继续往外触发,如阻止点击div内部事件,触发div事件
+ .prevent 是阻止事件本身行为,如阻止超链接的点击跳转,form表单的点击提交
+ .self 是只有是自己触发的自己才会执行,如果接受到内部的冒泡事件传递信号触发,会忽略掉这个信号
+ .capture 是改变js默认的事件机制,默认是冒泡,capture功能是将冒泡改为倾听模式
+ .once 是将事件设置为只执行一次,如 .click.prevent.once 代表只阻止事件的默认行为一次,当第二次触发的时候事件本身的行为会执行
+
+.self和.stop区别: .self只是阻止自身不执行冒泡触发,不会阻止冒泡继续向外部触发,.stop是从自身开始不向外部发射冒泡信号
+
+#### Math.max()函数
+
+```
+Math.max(x...)
+```
+
+返回几个指定的数中带有较大的值的那个数。
+
+#### return style.charAt(0).toUppercase() + style.substr(1)
+
+做浏览器transform兼容的时候 重命名 加前缀以及首字母大写处理
+
+### 什么时候需要用的Vue.nextTick()
+
+1. 你在Vue生命周期的`created()`钩子函数进行的DOM操作一定要放在`Vue.nextTick()`的回调函数中。原因是什么呢，原因是在`created()`钩子函数执行的时候DOM 其实并未进行任何渲染，而此时进行DOM操作无异于徒劳，所以此处一定要将DOM操作的js代码放进`Vue.nextTick()`的回调函数中。与之对应的就是`mounted`钩子函数，因为该钩子函数执行时所有的DOM挂载和渲染都已完成，此时在该钩子函数中进行任何DOM操作都不会有问题 。
+2. 在数据变化后要执行的`某个操作`，而这个`操作`需要使用随数据改变而改变的DOM结构的时候，这个`操作`都应该放进`Vue.nextTick()`的回调函数中。
+
+![0928300](C:\Users\Administrator\Desktop\0928300.gif)
+
+#### slice()
+
+slice() 方法可从已有的数组中返回选定的元素。
+
+```
+arrayObject.slice(start,end)  // 包含从 start 到 end （不包括该元素）的 arrayObject 中的元素。负值从数组的尾部选取元素
+```
+
+#### shuffle()
+
+```
+shuffle(array) //函数把数组中的元素按随机顺序重新排列。
+```
+
+#### findIndex()
+
+findIndex() 方法返回传入一个测试条件（函数）符合条件的数组第一个元素位置。
+
+findIndex() 方法为数组中的每个元素都调用一次函数执行：
+
+- 当数组中的元素在测试条件时返回 *true* 时, findIndex() 返回符合条件的元素的索引位置，之后的值不会再调用执行函数。
+
+- 如果没有符合条件的元素返回 -1
+
+- **注意:** findIndex() 对于空数组，函数是不会执行的。
+
+  **注意:** findIndex() 并没有改变数组的原始值。
+
+  ```
+  var ages = [3, 10, 18, 20];
+  function checkAdult(age) { //为什么能够拿到数组的每个age，因为这里先回遍历数组
+  return age >= 18;
+  }
+  function myFunction() {
+  document.getElementById("demo").innerHTML = ages.findIndex(checkAdult);
+  }
+  ```
+
+#### php    splice()
+
+splice() 方法用于添加或删除数组中的元素。
+
+```
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.splice(2,1,"Lemon","Kiwi");
+结果// Banana,Orange,Lemon,Kiwi,Mango
+```
+
+#### slice()
+
+返回一个新的数组，包含从 start 到 end （不包括该元素）的 arrayObject 中的元素。
+
+可以用于vuex在actions中修改state引起的报错 即在获取state引用类型中的值时加 .slice() 创建一个副本 而值类型的赋值 则不需要创建副本
+
+```
+let playlist = state.playlist.slice()
+let sequenceList = state.sequenceList.slice()
+let currentIndex = state.currentIndex
+```
+
+#### 函数柯里化设置延时，用在项目搜索中，不希望发起多次请求以减少服务器消耗
+
+```
+export function debounce(func, delay) {
+  let timer
+
+  return function (...args) {
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      func.apply(this, args)
+    }, delay)
+  }
+}
+```
+
+#### blur()
+
+blur() 方法用于移除文本域的焦点。//项目中用于手机端搜索结果列表发起滚动时收回键盘
+
+document.getElementById("myText").blur();
+
+this,$refs.query.blur()
+
+#### better-scroll   good-storage  lyric-parse
+
+#### pop() 
+
+pop() 方法用于删除数组的最后一个元素并返回删除的元素。
+
+**注意：**此方法改变数组的长度！
+
+**提示：** 移除数组第一个元素，请使用 [shift()](http://www.runoob.com/jsref/jsref-shift.html) 方法。
+
+#### 移动端的调试技巧
+
+vConsole
+
+#### 解决字太长的问题
+
+加样式
+
+```
+	overflow hidden
+
+​ white-space nowrap
+
+​text-overflow ellipsis
+```
+
+#### 给样式背景加渐变效果
+
+```
+background-image linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,.8))
+```
+
+# mongoose的findByIdAndUpdate返回更新后数据
+
+```
+A.findByIdAndUpdate(id, update, options, callback) // executes
+A.findByIdAndUpdate(id, update, options)  // returns Query
+A.findByIdAndUpdate(id, update, callback) // executes
+A.findByIdAndUpdate(id, update)           // returns Query
+A.findByIdAndUpdate()                     // returns Query
+```
+
+```
+id：指定_id的值；update：需要修改的数据；options控制选项；callback回调函数。
+options有以下选项：
+new： bool - 默认为false。返回修改后的数据。
+upsert： bool - 默认为false。如果不存在则创建记录。
+runValidators： 如果值为true，执行Validation验证。
+setDefaultsOnInsert： 如果upsert选项为true，在新建时插入文档定义的默认值。
+sort： 如果有多个查询条件，按顺序进行查询更新。
+select： 设置数据的返回。
+```
+
+#### mongoose删除多个数据
+
+```js
+删除一条数据：传入id
+
+Model.remove({ _id: 传入的id });
+删除多条数据，传入id数组，使用$in方法
+
+Model.remove({ _id: { $in: ['aID', 'bID'] } });
+ 
+同理，mongoose多个id同时查询，把方法名换为find即可
+
+传入一个id查询一条数据：
+
+Model.find({ _id: 传入的id });
+传入多个id，查询多条数据，传入id数组，使用$in方法
+
+Model.find({ _id: { $in: ['aID', 'bID'] } });
+```
+
+#### 错误响应error.response.status = 401表示token过期
+
+```
+localStorage.removeItem('eleToken')
+```
+
+#### 端口占用的解决
+
+```
+netstat -ano|findstr "3000" 查看被占用的端口号
+
+taskkill -PID 13512 -F  终止占用端口号pid为13512的程序
+```
+
+#### 在页面没有与用户做交互行为的时候，利用中间件做交互响应
+
+#### 数据库的导入操作
+
+```
+mongoimport -d student -c topsearches topsearches.dat
+```
+
+#### 利用a标签锚点原理实现字母与城市大类的绑定联动。
