@@ -4,6 +4,8 @@ import Main from './views/Main.vue'
 import Home from './views/Home.vue'
 import Article from './views/Article.vue'
 import Hero from './views/Hero.vue'
+import GongLue from './views/GongLue.vue'
+import SaiShi from './views/SaiShi.vue'
 
 
 Vue.use(Router)
@@ -15,7 +17,9 @@ export default new Router({
       component: Main,
       children: [
         { path: '/', name: 'home', component: Home },
-        { path: '/articles/:id', name: 'article', component: Article, props: true }
+        { path: '/articles/:id', name: 'article', component: Article, props: true },
+        {path: '/gonglue', component: GongLue},
+        {path: '/saishi', component: SaiShi},
       ]
     },
     {
