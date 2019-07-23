@@ -2,7 +2,6 @@
   <m-card :icon="icon" :title="title">
     <div class="nav jc-between">
       <div class="nav-item" v-for="(category,i) in catigories" :key="i" :class="{active: active===i}" @click="$refs.list.swiper.slideTo(i)">
-        <slot name="icons" :category="category"></slot>
         <div class="nav-link text-center">{{category.name}}</div>
       </div>
     </div>

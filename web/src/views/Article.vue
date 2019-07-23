@@ -1,13 +1,13 @@
 <template>
   <div class="page-article" v-if="model">
     <div class="d-flex py-3 px-2 border-bottom">
-      <div class="iconfont icon-back mr-2 text-blue"></div>
+      <i class="iconfont icon-back mr-2 text-blue" @click="$router.back()"></i>
       <strong class="flex-1 text-blue">{{model.title}}</strong>
       <div class="text-gary fs-xs">
         2018-9-9
       </div>
     </div>
-    <div v-html="model.body" class="px-3 article-body fs-lg"></div>
+    <div v-html="model.body" class="px-3 pt-2 article-body fs-lg"></div>
     <div class="px-3 py-3 border-top">
       <div class="d-flex ai-center">
         <i class="iconfont icon-caidan1"></i>
@@ -50,7 +50,7 @@ export default {
 <style lang="scss">
 .page-article {
   .icon-back {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
   .article-body {
     img {

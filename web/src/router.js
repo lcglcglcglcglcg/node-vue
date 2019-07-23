@@ -16,10 +16,11 @@ export default new Router({
       path: '/',
       component: Main,
       children: [
-        { path: '/', name: 'home', component: Home },
+        { path: '/home', name: 'home', component: Home },
         { path: '/articles/:id', name: 'article', component: Article, props: true },
         {path: '/gonglue', component: GongLue},
         {path: '/saishi', component: SaiShi},
+        {path: '/', redirect: '/home'},
       ]
     },
     {

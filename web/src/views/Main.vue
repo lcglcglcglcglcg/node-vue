@@ -10,18 +10,15 @@
     </div>
     <div class="bg-primary pt-3 pb-2">
       <div class="nav nav-inverse jc-around pb-1">
-        <div class="nav-item" :class="{active: active===0}"
-        @click="active=0">
-          <router-link class="nav-link" tag="div" to="/">首页</router-link>
-        </div>
-        <div class="nav-item" :class="{active: active===1}"
-        @click="active=1">
-          <router-link class="nav-link" tag="div" to="/gonglue">攻略中心</router-link>
-        </div>
-        <div class="nav-item" :class="{active: active===2}"
-        @click="active=2">
-          <router-link class="nav-link" tag="div" to="/saishi">赛事中心</router-link>
-        </div>
+        <router-link tag="div" to="/home" class="nav-item">
+          <div class="nav-link">首页</div>
+        </router-link>
+        <router-link tag="div" to="/gonglue" class="nav-item">
+          <div class="nav-link">攻略中心</div>
+        </router-link>
+        <router-link tag="div" to="/saishi" class="nav-item">
+          <div class="nav-link" tag="div" to="/saishi">赛事中心</div>
+        </router-link>
       </div>
     </div>
     <router-view></router-view>
@@ -32,7 +29,6 @@
 export default {
   data() {
     return {
-      active: 0
     }
   }
 }

@@ -28,104 +28,145 @@
         </div>
       </div>
     </div>
-    <div class="body p-2">
-      <div class="nav bg-white d-flex jc-around ai-center fs-lg py-2 border-bottom">
-        <div class="nav-item" :class="{active: active===0}" @click="$refs.list.swiper.slideTo(0)">
-          <div class="nav-link">英雄初识</div>
-        </div>
-        <div class="nav-item" :class="{active: active===1}" @click="$refs.list.swiper.slideTo(1)">
-          <div class="nav-link">进阶攻略</div>
+    <!-- end of top -->
+    <div>
+      <div class="px-3 bg-white">
+        <div class="nav d-flex jc-around pt-3 pb-2 border-bottom">
+          <div class="nav-item" :class="{active:currentContentIndex === 0}"
+          @click="$refs.contentList.swiper.slideTo(0)"
+          >
+            <div class="nav-link">英雄初识</div>
+          </div>
+          <div class="nav-item" :class="{active:currentContentIndex === 1}"
+          @click="$refs.contentList.swiper.slideTo(1)"
+          >
+            <div class="nav-link">进阶攻略</div>
+          </div>
         </div>
       </div>
-      <div class="cantainer">
-        <swiper ref="list" @slide-change="() => active = $refs.list.swiper.realIndex">
-          <swiper-slide>
-            <div class="d-flex jc-between pt-3 bg-white">
-              <div class="bottom">
-                <i class="iconfont icon-shipin mr-2  text-primary"></i>
-                <span class="fs-lg">英雄介绍视频</span>
+      <swiper ref="contentList" 
+        :options="{autoHeight: true}"
+        @slide-change="() => currentContentIndex = $refs.contentList.swiper.realIndex">
+        <swiper-slide>
+          <div>
+            <div class="p-3 bg-white border-bottom">
+              <!-- button -->
+              <div class="d-flex">
+                <router-link tag="button" class="btn btn-lg flex-1" to="/">
+                  <i class='iconfont icon-caidan1'></i>
+                  英雄介绍视频
+                </router-link>
+                <router-link tag="button" class="btn btn-lg flex-1 ml-2" to="/">
+                  <i class='iconfont icon-caidan1'></i>
+                  英雄介绍视频
+                </router-link>
               </div>
-              <div class="bottom">
-                <i class="iconfont icon-shipin mr-2  text-primary"></i>
-                <span class="fs-lg">一图识别英雄</span>
-              </div>
-            </div>
-            <div class="bg-white pt-1 pb-2">
-              <m-list-card icon="caidan1" title="技能介绍" :catigories="model.skills">
-                <template #icons='{category}'>
-                  <div class="w-100 p-2">
-                    <img class="w-100" :src="category.icon" alt="">
-                  </div>
-                </template>
-                <template #items='{category}'>
-                  <m-skill :skill='category'></m-skill>
-                </template>
-              </m-list-card>
-            </div>
-            <div class="mt-3 bg-white recommend px-2">
-              <m-hero-card icon="shipin" title="出装推荐">
-                <div>
-                  <div class="text-dark pb-2" style="font-size:16px">顺风出装</div>
-                  <div class="d-flex ai-center jc-between">
-                    <div class="px-1 w-100 text-center text-gary" v-for="(item, i) in model.items1" :key="i">
-                      <img class="icon" :src="item.icon">
-                      <span class="text-center fs-sm name">{{item.name}}</span>
+              <!-- skills -->
+              <div class="skills mt-4">
+                <div class="d-flex jc-around">
+                  <img
+                  class="icon"
+                  :class="{active: currentSkillIndex === i}"
+                  @click="$refs.skillList.swiper.slideTo(i)"
+                  :src="item.icon"
+                  v-for="(item, i) in model.skills"
+                  :key="item.name"
+                  >
+                </div>
+                <!-- 加滑屏效果：利用滑屏事件slide-change 和 方法slideTo()做对应关联 -->
+                <swiper ref="skillList" 
+                :options="{autoHeight: true}"
+                @slide-change="() => currentSkillIndex = $refs.skillList.swiper.realIndex">
+                  <swiper-slide v-for='(item, i) in model.skills' :key="i">
+                    <div v-if="item">
+                      <div class="d-flex pt-4 pb-3">
+                        <h3>{{item.name}}</h3>
+                        <span class="text-gary-1 ml-4">
+                          (冷却值：{{item.delay}}
+                          消耗：{{item.cost}})
+                        </span>
+                      </div>
+                      <p>{{item.description}}</p>
+                      <div class="border-bottom mt-2"></div>
+                      <p class="text-gary-1 mt-2">小提示：{{item.tips}}</p>
                     </div>
+                  </swiper-slide>
+                </swiper>
+                <!-- 不加滑屏效果建议做法：计算属性计算出一个对应的渲染对象 -->
+                <!-- <div v-if="currentSkill">
+                  <div class="d-flex pt-4 pb-3">
+                    <h3>{{currentSkill.name}}</h3>
+                    <span class="text-gary-1 ml-4">
+                      (冷却值：{{currentSkill.delay}}
+                      消耗：{{currentSkill.cost}})
+                    </span>
                   </div>
-                  <div class="tips mt-3 pb-3">小提示：xxxxxx</div>
-                </div>
-                <div class="border-top pt-3">
-                  <div class="text-dark pb-2" style="font-size:16px">逆风出装</div>
-                  <div class="d-flex ai-center jc-between">
-                    <div class="px-1 w-100 text-center text-gary" v-for="(item, i) in model.items2" :key="i">
-                      <img class="icon" :src="item.icon">
-                      <span class="text-center fs-sm name">{{item.name}}</span>
-                    </div>
-                  </div>
-                  <div class="tips mt-3 pb-3">小提示：xxxxxx</div>
-                </div>
-              </m-hero-card>
-            </div>
-            <div class="mt-3 bg-white">
-              <m-hero-card icon="shipin" title="使用技巧">
-                <p class="fs-lg text-dark-1 pb-3">{{model.usageTips}}</p>
-              </m-hero-card>
-            </div>
-            <div class="mt-3 bg-white">
-              <m-hero-card icon="shipin" title="战斗技巧">
-                <p class="fs-lg text-dark-1 pb-3">{{model.battleTips}}</p>
-              </m-hero-card>
-            </div>
-            <div class="mt-3 bg-white">
-              <m-hero-card icon="shipin" title="团队思路">
-                <p class="fs-lg text-dark-1 pb-3">{{model.teamTips}}</p>
-              </m-hero-card>
-            </div>
-            <div class="mt-3 bg-white">
-              <m-hero-card icon="shipin" title="英雄关系">
-                <p class="fs-lg text-dark-1 pb-3">最佳搭档</p>
-                <div class="" v-for="(partner, i) in model.partners" :key="i">
-                  <img :src="partner.hero.avatar" alt="">{{partner.hero}}
-                  <p>{{partner.description}}</p>
-                </div>
-              </m-hero-card>
-            </div>
-          </swiper-slide>
-          <swiper-slide class="bg-white">
-            <div class="strategy d-flex jc-betwwen py-3 border-bottom" v-for="(strategy, i) in model.strategies" :key="i">
-              <img style="width:30%; height:5rem" :src="strategy.icon" alt="">
-              <div class="mx-3 d-flex jc-end flex-column w-100">
-                <p class="flex-1 text-dark-1">{{strategy.name}}</p>
-                <div class="d-flex jc-between w-100 ai-center text-gary">
-                  <i class="iconfont icon-shipin pr-1 fs-sm"></i>
-                  <span class="fs-sm flex-1">{{strategy.play}}</span>
-                  <span class="fs-sm">{{strategy.date}}</span>
-                </div>
+                  <p>{{currentSkill.description}}</p>
+                  <div class="border-bottom mt-2"></div>
+                  <p class="text-gary-1 mt-2">小提示：{{currentSkill.tips}}</p>
+                </div> -->
               </div>
             </div>
-          </swiper-slide>
-        </swiper>
-      </div>
+            <m-card plain icon="caidan1" title="出装推荐">
+              <div class="fs-lg">顺风出装</div>
+              <div class="d-flex jc-around text-center mt-3">
+                <div class="hero-items" v-for="item in model.items1" :key="item.id">
+                  <img class='icon' :src="item.icon" alt="">
+                  <p class="fs-xs">{{item.name}}</p>
+                </div>
+              </div>
+              <div class='border-bottom mt-3'></div>
+              <div class="fs-lg mt-3">逆风出装</div>
+              <div class="d-flex jc-around text-center mt-3">
+                <div class="hero-items" v-for="item in model.items2" :key="item.id">
+                  <img class='icon' :src="item.icon" alt="">
+                  <p class="fs-xs">{{item.name}}</p>
+                </div>
+              </div>
+            </m-card>
+            <m-card plain icon="caidan1" title="使用技巧">
+              <p>{{model.usageTips}}</p>
+            </m-card>
+            <m-card plain icon="caidan1" title="对抗技巧">
+              <p>{{model.battleTips}}</p>
+            </m-card>
+            <m-card plain icon="caidan1" title="团战思路">
+              <p>{{model.teamTips}}</p>
+            </m-card>
+            <m-card plain icon="caidan1" title="英雄关系">
+              <div class="fs-xl">最佳搭档</div>
+              <div v-for="item in model.partners" :key="item.id" class="d-flex pt-3">
+                <img :src="item.hero.avatar" alt="" height="50">
+                <p class="felx-1 ml-3 mt-1">{{item.description}}</p>
+              </div>
+              <div class="border-bottom mt-3"></div>
+            </m-card>
+          </div>
+        </swiper-slide>
+        <swiper-slide>
+          <div class="px-3 bg-white">
+            <div v-for="item in model.strategies" :key="item.id">
+              <div class="d-flex py-3">
+                <img :src="item.icon" width="128" height="71" style="border-radius: 0.5rem">
+                <div class="ml-3 flex-1 d-flex flex-column">
+                  <p class="flex-1 fs-lg">{{item.name}}</p>
+                  <div class="d-flex">
+                    <div class="flex-1 d-flex ai-center">
+                      <i class="iconfont icon-caidan1 text-gary"></i>
+                      <span class="text-gary fs-xs ml-1">{{item.play}}</span>
+                    </div>
+                    <span class="text-gary fs-xs">{{item.date}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class='border-bottom'></div>
+            </div>
+          </div>
+          <div class="bg-light-1 py-1">
+            <p class="fs-md text-center text-gary">全部加载完成</p>
+          </div>
+        </swiper-slide>
+      </swiper>
     </div>
   </div>
 </template>
@@ -138,8 +179,13 @@ export default {
   data() {
     return {
       model: null,
-      active: 0,
-      isClick: 0,
+      currentSkillIndex: 0,
+      currentContentIndex: 0,
+    }
+  },
+  computed: {
+    currentSkill() {
+      return this.model.skills[this.currentSkillIndex]
     }
   },
   methods: {
@@ -155,6 +201,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../assets/scss/_variables.scss';
 .page-hero {
   .topbar {
     background: url('../assets/logo.png') no-repeat 0 87.195%;
@@ -193,23 +240,22 @@ export default {
       }
     }
   }
-  .body{
-    .cantainer {
-      .bottom {
-        width: 49%;
-        height: 3.125rem;
-        line-height: 3.125rem;
-        text-align: center;
-        border: 1px solid #eee;
-        border-radius: 0.7rem;
+  .skills {
+    img.icon {
+      width: 70px;
+      height: 70px;
+      border: 3px solid map-get($colors, 'white');
+      border-radius: 50%;
+      &.active {
+        border-color: map-get($colors, 'primary')
       }
-      .recommend {
-        .icon {
-          width: 100%;
-          height: auto;
-          border-radius: 50%;
-        }
-      }
+    } 
+  }
+  .hero-items {
+    img.icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
     }
   }
 }

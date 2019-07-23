@@ -15,10 +15,6 @@ import Card from './components/Card.vue'
 Vue.component('m-card', Card)
 import ListCard from './components/ListCard.vue'
 Vue.component('m-list-card', ListCard)
-import Skill from './components/Skill.vue'
-Vue.component('m-skill', Skill)
-import HeroCard from './components/HeroCard.vue'
-Vue.component('m-hero-card', HeroCard)
 
 import axios from 'axios'
 Vue.prototype.$http = axios.create({
